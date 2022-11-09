@@ -1,11 +1,14 @@
-import config from "../config.json";
+import { useState } from "react";
 import styled from "styled-components";
+import config from "../config.json";
 import { CSSReset } from "../src/components/CSSReset";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
 import Banner from "../src/components/Banner";
 
 export default function HomePage() {
+  const [search, setSearch] = useState("");
+
   return (
     <>
       <CSSReset />
@@ -16,10 +19,12 @@ export default function HomePage() {
           flex: 1,
         }}
       >
-        <Menu />
-        <Banner />
+        <Menu search={search} setSearch={setSearch} />
         <Header />
-        <Timeline playlists={config.playlists}>Conteúdo</Timeline>
+
+        <Timeline search={search} playlists={config.playlists}>
+          Conteúdo
+        </Timeline>
       </div>
     </>
   );
@@ -32,7 +37,6 @@ const StyledHeader = styled.div`
     border-radius: 50%;
   }
   .user-info {
-    margin-top: 50px;
     display: flex;
     align-items: center;
     width: 100%;
@@ -44,6 +48,7 @@ const StyledHeader = styled.div`
 function Header() {
   return (
     <StyledHeader>
+      <Banner />
       {/* <img src="" alt="" /> */}
       <section className="user-info">
         <img
@@ -59,7 +64,7 @@ function Header() {
   );
 }
 
-function Timeline(props) {
+function Timeline({ search, ...props }) {
   const playlistNames = Object.keys(props.playlists);
   return (
     <StyledTimeline>
@@ -69,14 +74,20 @@ function Timeline(props) {
           <section key={index}>
             <h2>{playlistName}</h2>
             <div>
-              {videos.map((video, index) => {
-                return (
-                  <a href={video.url} key={index}>
-                    <img src={video.thumb} alt={video.title} />
-                    <span>{video.title}</span>
-                  </a>
-                );
-              })}
+              {videos
+                .filter((video) => {
+                  const titleNormalized = video.title.toLowerCase();
+                  const searchValueNormalized = search.toLowerCase();
+                  return titleNormalized.includes(searchValueNormalized);
+                })
+                .map((video) => {
+                  return (
+                    <a key={video.url} href={video.url}>
+                      <img src={video.thumb} />
+                      <span>{video.title}</span>
+                    </a>
+                  );
+                })}
             </div>
           </section>
         );
