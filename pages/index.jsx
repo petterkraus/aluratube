@@ -3,12 +3,9 @@ import styled from "styled-components";
 import { CSSReset } from "../src/components/CSSReset";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
+import Banner from "../src/components/Banner";
 
 export default function HomePage() {
-  const estilosDaHomePage = {
-    // backgroundColor: "red"
-  };
-
   return (
     <>
       <CSSReset />
@@ -17,10 +14,10 @@ export default function HomePage() {
           display: "flex",
           flexDirection: "column",
           flex: 1,
-          // backgroundColor: "red",
         }}
       >
         <Menu />
+        <Banner />
         <Header />
         <Timeline playlists={config.playlists}>Conteúdo</Timeline>
       </div>
@@ -28,24 +25,20 @@ export default function HomePage() {
   );
 }
 
-// function Menu() {
-//   return <div>Menu</div>;
-// }
-
 const StyledHeader = styled.div`
- img {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-    }
-    .user-info {
-        margin-top: 50px;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding: 16px 32px;
-        gap: 16px;
-    }
+  img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  .user-info {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 16px 32px;
+    gap: 16px;
+  }
 `;
 
 function Header() {
@@ -70,15 +63,15 @@ function Timeline(props) {
   const playlistNames = Object.keys(props.playlists);
   return (
     <StyledTimeline>
-      {playlistNames.map((playlistName) => {
+      {playlistNames.map((playlistName, index) => {
         const videos = props.playlists[playlistName];
         return (
-          <section>
+          <section key={index}>
             <h2>{playlistName}</h2>
             <div>
-              {videos.map((video) => {
+              {videos.map((video, index) => {
                 return (
-                  <a href={video.url}>
+                  <a href={video.url} key={index}>
                     <img src={video.thumb} alt={video.title} />
                     <span>{video.title}</span>
                   </a>
