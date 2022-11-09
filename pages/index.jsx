@@ -1,17 +1,16 @@
 import { useState } from "react";
 import styled from "styled-components";
 import config from "../config.json";
-import { CSSReset } from "../src/components/CSSReset";
+
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
-import Banner from "../src/components/Banner";
+import Banner from "../src/components/Menu/components/Banner";
 
 export default function HomePage() {
   const [search, setSearch] = useState("");
 
   return (
     <>
-      <CSSReset />
       <div
         style={{
           display: "flex",
@@ -31,6 +30,7 @@ export default function HomePage() {
 }
 
 const StyledHeader = styled.div`
+  background-color: ${({ theme }) => theme.backgroundLevel1};
   img {
     width: 80px;
     height: 80px;
@@ -49,7 +49,6 @@ function Header() {
   return (
     <StyledHeader>
       <Banner />
-      {/* <img src="" alt="" /> */}
       <section className="user-info">
         <img
           src={`https://github.com/${config.github}.png`}
